@@ -1,5 +1,5 @@
 serve:
-	go run main.go
+	go run cmd/api/main.go
 
 migrate_new:
 	migrate create -ext sql -dir db/migrations -seq $(name)
