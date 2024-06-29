@@ -11,6 +11,7 @@ type ProductService interface {
 	DeleteProduct(guid string) error
 	GetProductByGuid(guid string) (*models.Product, error)
 	GetAllProducts(page, limit int) ([]models.Product, error)
+	GetProductsByCategoryGuid(categoryGuid string, page, limit int) ([]models.Product, error)
 }
 
 type productService struct {
@@ -40,4 +41,9 @@ func (s *productService) GetProductByGuid(guid string) (*models.Product, error) 
 func (s *productService) GetAllProducts(page, limit int) ([]models.Product, error) {
 	offset := (page - 1) * limit
 	return s.productRepo.FindAll(offset, limit)
+}
+
+func (s *productService) GetProductsByCategoryGuid(categoryGuid string, page, limit int) ([]models.Product, error) {
+	offset := (page - 1) * limit
+	return s.productRepo.FindByCategoryGuid(categoryGuid, offset, limit)
 }
