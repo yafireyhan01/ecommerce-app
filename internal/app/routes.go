@@ -29,6 +29,11 @@ func setupRoutes(app *fiber.App, db *gorm.DB) {
 	productService := service.NewProductService(productRepo)
 	productHandler := handler.NewProductHandler(productService)
 
+	// Cart
+	cartRepo := repository.NewCartRepository(db)
+	cartService := service.NewCartService(cartRepo)
+	cartHandler := handler.NewCartHandler(cartService)
+
 	// Public routes
 	app.Post("/api/register", authHandler.Register)
 	app.Post("/api/login", authHandler.Login)
@@ -67,4 +72,10 @@ func setupRoutes(app *fiber.App, db *gorm.DB) {
 	customerGroup.Get("/products/:guid", productHandler.GetProductByID)
 	customerGroup.Get("/products", productHandler.GetAllProducts)
 	customerGroup.Get("/categories/:category_guid/products", productHandler.GetProductsByCategory)
+
+	// Car for Customer role
+	customerGroup.Post("/carts", cartHandler.CreateCart)
+	customerGroup.Get("/carts", cartHandler.GetAllCarts)
+	customerGroup.Put("/carts/:guid", cartHandler.UpdateCart)
+	customerGroup.Delete("/carts/:guid", cartHandler.DeleteCart)
 }
