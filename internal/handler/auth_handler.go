@@ -7,6 +7,7 @@ import (
 	"github.com/yafireyhan01/synapsis-test/internal/service"
 	"github.com/yafireyhan01/synapsis-test/internal/utils"
 	"golang.org/x/crypto/bcrypt"
+	"log"
 )
 
 type AuthHandler struct {
@@ -60,5 +61,44 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{
 		"message": "User registered successfully",
+	})
+}
+
+func (h *AuthHandler) Login(c *fiber.Ctx) error {
+	var input struct {
+		Email    string `json:"email" validate:"required,email"`
+		Password string `json:"password" validate:"required,min=6"`
+	}
+	if err := c.BodyParser(&input); err != nil {
+		log.Printf("Error parsing JSON: %v", err)
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
+	}
+
+	if err := h.validate.Struct(&input); err != nil {
+		log.Printf("Validation error: %v", err)
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
+	}
+
+	user, err := h.authService.FindByEmail(input.Email)
+	if err != nil {
+		log.Printf("Error finding user: %v", err)
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid email"})
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
+		log.Printf("Password mismatch: %v", err)
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid password"})
+	}
+
+	token, err := utils.GenerateJWT(user.Guid.String(), user.Email, user.Role)
+	if err != nil {
+		log.Printf("Error generating token: %v", err)
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Could not generate token"})
+	}
+
+	return c.JSON(fiber.Map{
+		"name":  user.Name,
+		"email": user.Email,
+		"token": token,
 	})
 }
