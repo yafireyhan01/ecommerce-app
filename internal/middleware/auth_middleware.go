@@ -30,7 +30,7 @@ func AuthorizeJWT() fiber.Handler {
 			}
 		}
 
-		c.Locals("UserID", claims.Guid)
+		c.Locals("UserGuid", claims.Guid)
 		c.Locals("UserEmail", claims.Email)
 		c.Locals("UserRole", claims.Role)
 
