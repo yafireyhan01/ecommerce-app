@@ -57,6 +57,7 @@ func setupRoutes(app *fiber.App, db *gorm.DB) {
 	sellerGroup.Delete("/products/:guid", productHandler.DeleteProduct)
 	sellerGroup.Get("/products/:guid", productHandler.GetProductByID)
 	sellerGroup.Get("/products", productHandler.GetAllProducts)
+	sellerGroup.Get("/categories/:category_guid/products", productHandler.GetProductsByCategory)
 
 	// Customer
 	customerGroup := api.Group("/customer")
@@ -65,4 +66,5 @@ func setupRoutes(app *fiber.App, db *gorm.DB) {
 	// Product for Customer role
 	customerGroup.Get("/products/:guid", productHandler.GetProductByID)
 	customerGroup.Get("/products", productHandler.GetAllProducts)
+	customerGroup.Get("/categories/:category_guid/products", productHandler.GetProductsByCategory)
 }

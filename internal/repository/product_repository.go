@@ -12,6 +12,7 @@ type ProductRepository interface {
 	Delete(guid string) error
 	FindByID(guid string) (*models.Product, error)
 	FindAll(offset, limit int) ([]models.Product, error)
+	FindByCategoryGuid(categoryGuid string, offset, limit int) ([]models.Product, error)
 }
 
 type productRepository struct {
@@ -43,5 +44,12 @@ func (r *productRepository) FindByID(guid string) (*models.Product, error) {
 func (r *productRepository) FindAll(offset, limit int) ([]models.Product, error) {
 	var products []models.Product
 	err := r.db.Model(&models.Product{}).Select("guid, category_guid, name, description, price, stock_qty").Where("deleted_at IS NULL").Offset(offset).Limit(limit).Find(&products).Error
+	return products, err
+}
+
+func (r *productRepository) FindByCategoryGuid(categoryGuid string, offset, limit int) ([]models.Product, error) {
+	var products []models.Product
+	err := r.db.Where("category_guid = ? AND deleted_at IS NULL", categoryGuid).
+		Offset(offset).Limit(limit).Find(&products).Error
 	return products, err
 }

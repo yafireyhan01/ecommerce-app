@@ -160,3 +160,31 @@ func (h *ProductHandler) GetAllProducts(c *fiber.Ctx) error {
 
 	return c.JSON(response)
 }
+
+func (h *ProductHandler) GetProductsByCategory(c *fiber.Ctx) error {
+	categoryGuid := c.Params("category_guid")
+	page, err := strconv.Atoi(c.Query("page", "1"))
+	if err != nil || page < 1 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid page number"})
+	}
+
+	limit := 10
+	products, err := h.productService.GetProductsByCategoryGuid(categoryGuid, page, limit)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Could not retrieve products"})
+	}
+
+	response := make([]fiber.Map, len(products))
+	for i, product := range products {
+		response[i] = fiber.Map{
+			"guid":          product.Guid,
+			"category_guid": product.CategoryGuid,
+			"name":          product.Name,
+			"description":   product.Description,
+			"price":         product.Price,
+			"stock_qty":     product.StockQty,
+		}
+	}
+
+	return c.JSON(response)
+}
