@@ -26,7 +26,7 @@ func LoadConfig() {
 		log.Fatalf("Error while reading config file %s", err)
 	}
 
-	viper.AutomaticEnv() // read in environment variables that match
+	viper.AutomaticEnv()
 
 	AppConfig = &Config{
 		DBDriver:   viper.GetString("DB_DRIVER"),

@@ -14,14 +14,19 @@ func setupRoutes(app *fiber.App, db *gorm.DB) {
 	// Health check route
 	app.Get("/health-check", utils.HealthCheck)
 
-	// Initialize repositories, services, and handlers
+	// user
 	userRepository := repository.NewUserRepository(db)
 	authService := service.NewAuthService(userRepository)
 	authHandler := handler.NewAuthHandler(authService)
 
+	// category
+	categoryRepo := repository.NewCategoryRepository(db)
+	categoryService := service.NewCategoryService(categoryRepo)
+	categoryHandler := handler.NewCategoryHandler(categoryService)
+
 	// Public routes
-	app.Post("/register", authHandler.Register)
-	app.Post("/login", authHandler.Login)
+	app.Post("/api/register", authHandler.Register)
+	app.Post("/api/login", authHandler.Login)
 
 	// Protected routes
 	api := app.Group("/api")
@@ -30,12 +35,16 @@ func setupRoutes(app *fiber.App, db *gorm.DB) {
 		return c.JSON(fiber.Map{"message": "You are authorized!"})
 	})
 
-	// Role-specific routes
+	// Seller
 	sellerGroup := api.Group("/seller")
 	sellerGroup.Use(middleware.AuthorizeUserRole("SELLER"))
-	sellerGroup.Post("/create-product", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"message": "Seller authorized to create product"})
-	})
+
+	// Category
+	sellerGroup.Post("/categories", categoryHandler.CreateCategory)
+	sellerGroup.Put("/categories/:guid", categoryHandler.UpdateCategory)
+	sellerGroup.Delete("/categories/:guid", categoryHandler.DeleteCategory)
+	sellerGroup.Get("/categories/:guid", categoryHandler.GetCategoryByID)
+	sellerGroup.Get("/categories", categoryHandler.GetAllCategories)
 
 	customerGroup := api.Group("/customer")
 	customerGroup.Use(middleware.AuthorizeUserRole("CUSTOMER"))
