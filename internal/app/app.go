@@ -32,7 +32,7 @@ func Run() error {
 	// Start server
 	port := config.AppConfig.APIPort
 	if port == "" {
-		port = "3000"
+		port = "8080"
 	}
 	return app.Listen(":" + port)
 }

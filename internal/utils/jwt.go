@@ -1,25 +1,27 @@
 package utils
 
 import (
-	"github.com/golang-jwt/jwt/v5"
+	"github.com/golang-jwt/jwt/v4"
 	"time"
 )
 
 var jwtKey = []byte("your_secret_key")
 
 type Claims struct {
-	Guid string `json:"guid"`
-	Role string `json:"role"`
+	Guid  string `json:"guid"`
+	Email string `json:"email"`
+	Role  string `json:"role"`
 	jwt.RegisteredClaims
 }
 
-func GenerateJWT(guid, role string) (string, error) {
+func GenerateJWT(guid, email, role string) (string, error) {
 	now := time.Now()
 	expTime := now.Add(time.Hour * 12)
 
 	claims := &Claims{
-		Guid: guid,
-		Role: role,
+		Guid:  guid,
+		Email: email,
+		Role:  role,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "synapsis-test",
 			IssuedAt:  jwt.NewNumericDate(now),

@@ -21,12 +21,13 @@ func NewAuthService(userRepo repository.UserRepository) AuthService {
 }
 
 func (s *authService) Register(user *models.User) error {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return err
-	}
-	user.Password = string(hashedPassword)
 	return s.userRepo.Create(user)
+	//hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	//if err != nil {
+	//	return err
+	//}
+	//user.Password = string(hashedPassword)
+	//return s.userRepo.Create(user)
 }
 
 func (s *authService) Login(email, password string) (*models.User, error) {
