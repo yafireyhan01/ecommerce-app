@@ -39,6 +39,11 @@ func setupRoutes(app *fiber.App, db *gorm.DB) {
 	checkoutService := service.NewCheckoutService(checkoutRepo, cartRepo, productRepo)
 	checkoutHandler := handler.NewCheckoutHandler(checkoutService)
 
+	// Payment
+	paymentRepo := repository.NewPaymentRepository(db)
+	paymentService := service.NewPaymentService(paymentRepo, checkoutRepo)
+	paymentHandler := handler.NewPaymentHandler(paymentService)
+
 	// Public routes
 	app.Post("/api/register", authHandler.Register)
 	app.Post("/api/login", authHandler.Login)
@@ -86,4 +91,7 @@ func setupRoutes(app *fiber.App, db *gorm.DB) {
 
 	// Checkout
 	customerGroup.Post("/checkout", checkoutHandler.CreateCheckout)
+
+	// Payment
+	customerGroup.Post("/pay-checkout", paymentHandler.PayCheckout)
 }
