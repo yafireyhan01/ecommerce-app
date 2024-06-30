@@ -13,6 +13,7 @@ This is a backend app RESTful API Challenge from Synapsis
 ## ERD
 
 Here is the the erd link: https://dbdiagram.io/d/Synapsis-64d2361d02bd1c4a5e6e5d50
+
 ![ERD](docs/erd.png?raw=true "Entity Relationship Diagram")
 
 ## API docummentation
