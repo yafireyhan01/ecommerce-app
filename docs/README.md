@@ -18,7 +18,7 @@ Here is the the erd link: https://dbdiagram.io/d/Synapsis-64d2361d02bd1c4a5e6e5d
 
 ## API docummentation
 Here's a link to the postman documentation:
-https://documenter.getpostman.com/view/23469031/2sA3duGZCal
+https://documenter.getpostman.com/view/23469031/2sA3duGZCa
 
 ## Prerequisite run on local
 
