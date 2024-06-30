@@ -10,10 +10,10 @@ This is a backend app RESTful API Challenge from Synapsis
 * Customers can checkout and make payment transactions
 * Login and register customers
 
-## System Design : ERD
+## ERD
 
 Here is the the erd link: https://dbdiagram.io/d/Synapsis-64d2361d02bd1c4a5e6e5d50
-![Alt text](docs/erd.png?raw=true "Entity Relationship Diagram")
+![ERD](docs/erd.png?raw=true "Entity Relationship Diagram")
 
 ## API docummentation
 Here's a link to the postman documentation:
