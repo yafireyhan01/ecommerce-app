@@ -27,11 +27,13 @@ https://documenter.getpostman.com/view/23469031/2sA3duGZCa
 cp app.env.example app.env
 ```
 ### Set Database Account
+```bash
 DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=synapsis_db
 DB_USER=postgres
 DB_PASSWORD=
+```
 
 ### Database migration
 migrate https://github.com/golang-migrate/migrate/tree/master/cmd/migrate
