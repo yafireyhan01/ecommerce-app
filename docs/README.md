@@ -1,6 +1,7 @@
-# synapsis-test Backend Challenge
+# ecommerce app
 
-This is a backend app RESTful API Challenge from Synapsis
+This is a core of ecommerce system 
+BUILD WITH GOLANG
 
 ## Minimum viable product
 * Customer can view product list by product category
@@ -10,38 +11,11 @@ This is a backend app RESTful API Challenge from Synapsis
 * Customers can checkout and make payment transactions
 * Login and register customers
 
-## ERD
-
-Here is the the erd link: https://dbdiagram.io/d/Synapsis-64d2361d02bd1c4a5e6e5d50
-
-![ERD](docs/erd.png?raw=true "Entity Relationship Diagram")
-
-## API docummentation
-Here's a link to the postman documentation:
-https://documenter.getpostman.com/view/23469031/2sA3duGZCa
-
 ## Prerequisite run on local
-
-### Set Environment Variable
-```bash
-cp app.env.example app.env
-```
-### Set Database Account
-```bash
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=synapsis_db
-DB_USER=postgres
-DB_PASSWORD=
-```
 
 ### Database migration
 migrate https://github.com/golang-migrate/migrate/tree/master/cmd/migrate
 
-#### Export url
-```bash
-export POSTGRESQL_URL='postgres://postgres:root@localhost:5432/synapsis_db?sslmode=disable'
-```
 
 #### Migrate UP
 ```bash
